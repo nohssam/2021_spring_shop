@@ -70,8 +70,7 @@ public class MyDAOImpl implements MyDAO{
 	// 관리자가 제품 등록
 	@Override
 	public int insertShopProductAdd(VO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.insert("shopping.productAdd",vo);
 	}
 
 }

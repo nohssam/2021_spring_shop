@@ -74,7 +74,7 @@ table, th, td {
 		</tr>
 		<tr>
 			<th class="bg">제품설명</th>
-			<td>${vo.p_content}</td>
+			<td><pre>${vo.p_content}</pre></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><img

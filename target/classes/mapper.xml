@@ -32,6 +32,10 @@
 	<update id="cartAmountUpdate" parameterType="com.ict.vo.CVO">
 		update cart set amount = #{amount} where id=#{id} and p_num=#{p_num}
 	</update>
+	<insert id="productAdd" parameterType="com.ict.vo.VO">
+		insert into shop_t values(shop_seq.nextval, #{category}, #{p_num}, #{p_name}, #{p_company},
+		#{p_price}, #{p_saleprice}, #{p_image_s},#{p_image_l}, #{p_content}, sysdate)
+	</insert>
 </mapper>
 
 

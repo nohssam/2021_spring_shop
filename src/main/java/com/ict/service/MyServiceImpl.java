@@ -62,8 +62,7 @@ public class MyServiceImpl implements MyService{
 	}
 	@Override
 	public int insertShopProductAdd(VO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return myDAO.insertShopProductAdd(vo);
 	}
 	
 	
