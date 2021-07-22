@@ -28,11 +28,11 @@ input{
 </style>
 <script type="text/javascript">
 	function edit_cart(f) {
-		f.action="/MyController?cmd=editCart";
+		f.action="editCart.do";
 		f.submit();
 	}
 	function delete_cart(f) {
-		f.action="/MyController?cmd=deleteCart";
+		f.action="deleteCart.do";
 		f.submit();
 	}
 </script>
@@ -69,22 +69,26 @@ input{
 							<font style="color: tomato">(세일가 : <fmt:formatNumber value="${k.p_saleprice}" pattern="#,###" /> 원)</font>
 						</td>
 						<td>
+						<%-- 수정 --%>
 							<form method="post">
-				<%--변경 --%>	<input type="number" name="amount" value="${k.amount}" >
+								<input type="number" name="amount" value="${k.amount}" >
 								<input type="hidden" name="id" value="${k.id}">
 								<input type="hidden" name="p_num" value="${k.p_num}">
 								<input type="button" value="수정" onclick="edit_cart(this.form)">
 							</form>
 						</td>
-                <%--변경 --%><td><fmt:formatNumber value="${k.p_saleprice * k.amount }" pattern="#,###" /> 원</td>
+                		<td><fmt:formatNumber value="${k.p_saleprice * k.amount }" pattern="#,###" /> 원</td>
 						<td>
+							<%--삭제 --%>
 							<form method="post">
+							        <!-- 삭제시 아이디와 제품 번호 가지고 카트내용 삭제  -->
 									<input type="hidden" name="id" value="${k.id}">
 									<input type="hidden" name="p_num" value="${k.p_num}">
 								<input type="button" value="삭제" onclick="delete_cart(this.form)">
 							</form>
 						</td>
-				<%--추가 --%><c:set var="total" value="${total = total + (k.p_saleprice * k.amount) }"/>
+						<%--추가 --%>
+						<c:set var="total" value="${total = total + (k.p_saleprice * k.amount) }"/>
 					</tr>	
 					</c:forEach>
 				</c:otherwise>

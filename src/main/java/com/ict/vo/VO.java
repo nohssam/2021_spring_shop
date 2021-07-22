@@ -1,9 +1,13 @@
 package com.ict.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class VO {
 	private String idx, category, p_num, p_name, p_company, p_image_s, p_image_l,
 				   p_content, p_date;
 	private int p_price, p_saleprice;
+	
+	private MultipartFile p_image1 , p_image2 ;
 	
 	//  별도로 추가
 	private int quant, totalPrice ;
@@ -22,10 +26,26 @@ public class VO {
 	}
 
 	// getter/setter
+	public MultipartFile getP_image1() {
+		return p_image1;
+	}
+
+	public void setP_image1(MultipartFile p_image1) {
+		this.p_image1 = p_image1;
+	}
+
+	public MultipartFile getP_image2() {
+		return p_image2;
+	}
+
+	public void setP_image2(MultipartFile p_image2) {
+		this.p_image2 = p_image2;
+	}
+
+	
 	public String getIdx() {
 		return idx;
 	}
-
 	public void setIdx(String idx) {
 		this.idx = idx;
 	}

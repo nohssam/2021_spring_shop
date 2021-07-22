@@ -20,7 +20,7 @@ input{padding: 8px;}
 </style>
 <script type="text/javascript">
 	function product_add(f) {
-		f.action="/MyController?cmd=product_add";
+		f.action="product_add.do";
 		f.submit();
 	}
 </script>
@@ -37,7 +37,7 @@ input{padding: 8px;}
 						<th class="bg">분류</th>
 							<td>
 								<input type="radio" name="category" value="com001">컴퓨터
-								<input type="radio" name="category" value="ele002">가전제품
+								<input type="radio" name="category" value="ele002" checked>가전제품
 								<input type="radio" name="category" value="sp003">스포츠
 							</td>
 					</tr>
@@ -63,11 +63,11 @@ input{padding: 8px;}
 					</tr>
 					<tr>
 						<th class="bg">상품이미지_S</th>
-						<td><input type="file" name="p_image_s" required></td>
+						<td><input type="file" name="p_image1" required></td>
 					</tr>
 					<tr>
 						<th class="bg">상품이미지_L</th>
-						<td><input type="file" name="p_image_l" required></td>
+						<td><input type="file" name="p_image2" required></td>
 					</tr>
 					<tr>
 						<th colspan="2" class="bg">상품상세정보</th>

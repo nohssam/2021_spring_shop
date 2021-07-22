@@ -32,23 +32,23 @@
 	  <hr noshade/>
 	  <div id="header">
 		  <span class="title">
-			  HANBIT SHOPPING CENTER
+			  ICT SHOPPING CENTER
 		  </span>
 	  </div>
 	  <hr noshade/>
 	  <div id="nav">
-		  <a href="/MyController?cmd=list&category=com001">컴퓨터</a> | 
-		  <a href="/MyController?cmd=list&category=ele002">가전 제품</a> | 
-		  <a href="/MyController?cmd=list&category=sp003">스포츠</a>
+		  <a href="product_list.do?category=com001">컴퓨터</a> | 
+		  <a href="product_list.do?category=ele002">가전 제품</a> | 
+		  <a href="product_list.do?category=sp003">스포츠</a>
 		  <div id="log">
 		  	<c:choose>
 		  		<c:when test="${login=='ok' }">
 		  			${mvo.name }님  | 
-		  			<a href="/MyController?cmd=logout">로그아웃</a>  | 
-		  			<a href="/MyController?cmd=showCart">장바구니</a>  |
+		  			<a href="logout.do">로그아웃</a>  | 
+		  			<a href="showCart.do">장바구니</a>  |
 		  		</c:when>
 		  		<c:otherwise>
-		  			<a href="/MyController?cmd=login">로그인</a>
+		  			<a href="login.do">로그인</a>
 		  		</c:otherwise>
 		  	</c:choose>
 		  </div>

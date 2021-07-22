@@ -24,12 +24,12 @@
 			f.id.focus();
 			return;
 		}
-		f.action="/MyController?cmd=login_ok";
+		f.action="login_ok.do";
 		f.submit();
 	}
 	function join_go(f) {
 		alert("회원가입하러 갑니다.");
-		f.action="/MyController?cmd=join_ok";
+		f.action="join_ok.do";
 		f.submit();
 	}
 </script>

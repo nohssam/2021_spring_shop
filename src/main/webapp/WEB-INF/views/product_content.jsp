@@ -22,24 +22,24 @@ table, th, td {
 
 .bg {
 	background-color: #dedede;
-	width: 40%;
+	width: 30%;
 }
 </style>
 <script type="text/javascript">
 	function add_cart() {
 		if(${login=='ok'}){
-			location.href="/MyController?cmd=addCart&idx=${vo.idx}";
+			location.href="addCart.do?idx=${vo.idx}";
 		}else{
 			alert("로그인 하세요");
-			location.href="/MyController?cmd=login";
+			location.href="login.do";
 		} 
 	}
 	function show_cart() {
 		if(${login=='ok'}){
-			location.href="/MyController?cmd=showCart";
+			location.href="showCart.do";
 		}else{
 			alert("로그인 하세요");
-			location.href="/MyController?cmd=login";
+			location.href="login.do";
 		} 
 	}
 </script>
@@ -78,7 +78,7 @@ table, th, td {
 		</tr>
 		<tr>
 			<td colspan="2" align="center"><img
-				src="/images/${vo.p_image_l}" style="width: 350px;"></td>
+				src="resources/images/${vo.p_image_l}" style="width: 350px;"></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">

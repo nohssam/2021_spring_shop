@@ -5,7 +5,33 @@
  
 <!-- mapper가 여러개 일때 namespace 로 구분한다. -->
 <mapper namespace="shopping">
-	
+	<select id="list" parameterType="String" resultType="com.ict.vo.VO">
+		select * from shop_t where category = #{category}
+	</select>
+	<select id="onelist" parameterType="String" resultType="com.ict.vo.VO">
+		select * from shop_t where idx = #{idx}
+	</select>
+	<select id="login" parameterType="com.ict.vo.MVO" resultType="com.ict.vo.MVO">
+		select * from members where id = #{id} and pw = #{pw}
+	</select>
+	<select id="selectCart" parameterType="map" resultType="com.ict.vo.CVO">
+		select * from cart where id = #{id} and p_num = #{p_num}
+	</select>
+	<insert id="cartInsert" parameterType="com.ict.vo.CVO">
+		insert into cart values(cart_seq.nextval, #{p_num}, #{p_name}, #{p_price}, #{p_saleprice}, #{amount}, #{id})
+	</insert>
+	<update id="cartUpdate" parameterType="com.ict.vo.CVO">
+		update cart set amount = amount + 1 where id=#{id} and p_num = #{p_num}
+	</update>
+	<select id="cartList" parameterType="String" resultType="com.ict.vo.CVO">
+		select * from cart where id = #{id}
+	</select>
+	<delete id="cartDelete" parameterType="com.ict.vo.CVO">
+		delete from cart where id=#{id} and p_num = #{p_num} 
+	</delete>
+	<update id="cartAmountUpdate" parameterType="com.ict.vo.CVO">
+		update cart set amount = #{amount} where id=#{id} and p_num=#{p_num}
+	</update>
 </mapper>
 
 
