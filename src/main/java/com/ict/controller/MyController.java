@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,39 +62,37 @@ public class MyController {
 	}
 	
 	@RequestMapping("login_ok.do")
-	public ModelAndView logInOkCommand(MVO m_vo, HttpServletRequest request) {
+	public ModelAndView logInOkCommand(MVO m_vo, HttpSession session) {
 		try {
 			MVO mvo = myService.selectShopLogIn(m_vo);
 			if(mvo == null) {
-				request.setAttribute("log_in","0");
+				session.setAttribute("log_in","0");
 				return new ModelAndView("login_err");
 			}else {
-				request.setAttribute("log_in","1");
-				request.setAttribute("log_id",mvo.getId());
-				request.setAttribute("log_name",mvo.getName());
+				session.setAttribute("log_in","1");
+				session.setAttribute("log_id",mvo.getId());
+				session.setAttribute("log_name",mvo.getName());
 				
 				// 관리자인 경우
 				if(mvo.getId().equals("admin") && mvo.getPw().equals("admin")) {
-					request.setAttribute("admin", "ok");
+					session.setAttribute("admin", "ok");
 					return new ModelAndView("admin");
 				}
 				// 관리자가 아니면 일반 회원
-				return new ModelAndView("product_list");
+				return new ModelAndView("redirect:product_list.do");
 			}
 		} catch (Exception e) {
-			System.out.println(e);
-			request.setAttribute("log_in","0");
+			session.setAttribute("log_in","0");
 		}
 		return null;
 	}
 	@RequestMapping(value = "addCart.do",produces = "application/html; charset=utf-8" )
 	@ResponseBody
-	public String AddCart(@ModelAttribute("idx")String idx,
-			HttpSession session) {
+	public String AddCart(HttpSession session, String idx) {
 		try {
 			// 제품 정보를 구하기 위해서 VO 구하자 
-			MVO mvo = (MVO)session.getAttribute("mvo");
-			String id = mvo.getId();
+			String id = (String)session.getAttribute("log_id");
+			
 			
 			// idx를 이용해서 제품 정보를 구하자 
 			VO vo = myService.selectShopOneList(idx);
@@ -122,11 +121,12 @@ public class MyController {
 		}
 		
 	}
-	@RequestMapping("showCart.do")
-	public ModelAndView showCartCommand(@ModelAttribute("id") String id) {
+	@RequestMapping("cartList_go.do")
+	public ModelAndView cartList_goCommand(HttpSession session) {
 		try {
 			ModelAndView mv = new ModelAndView("cartList");
-		
+			String id = (String)session.getAttribute("log_id") ;
+			
 			// 카트 테이블에서 해당 아이디가 가진 모든 목록을 가져오기 
 			List<CVO> cartList = myService.selectShopCartList(id);
 			mv.addObject("cartList", cartList);
@@ -136,12 +136,18 @@ public class MyController {
 		return null;
 	}
 	
+	
+	@RequestMapping("logout.do")
+	public ModelAndView logoutCommand(HttpSession session) {
+		session.invalidate();
+		return new ModelAndView("redirect:product_list.do");
+	}
+	
 	@RequestMapping(value = "cartList.do",produces = "application/json; charset=utf-8" )
 	@ResponseBody
 	public List<CVO> cartListCommand(HttpSession session) {
 		try {
-			MVO mvo = (MVO)session.getAttribute("mvo");
-			String id = mvo.getId();
+			String id = (String)session.getAttribute("log_id");
 			// 카트 테이블에서 해당 아이디가 가진 모든 목록을 가져오기 
 			List<CVO> cartList = myService.selectShopCartList(id);
 			return cartList;
@@ -150,31 +156,26 @@ public class MyController {
 		return null;
 	}
 	
-	@RequestMapping("logout.do")
-	public ModelAndView logoutCommand(HttpSession session) {
-		session.invalidate();
-		return new ModelAndView("redirect:product_list.do");
-	}
-	
-	@RequestMapping(value = "deleteCart.do",produces = "application/json; charset=utf-8" )
+	@RequestMapping(value = "deleteCart.do",produces = "text/html; charset=utf-8" )
 	@ResponseBody
-	public List<CVO> deleteCart2Command(CVO cvo, HttpSession session){
+	public String deleteCartCommand(CVO cvo){
 		try {
+			System.out.println(cvo.getId());
+			System.out.println(cvo.getP_num());
 			int result = myService.deleteCartDel(cvo);
-			MVO mvo = (MVO)session.getAttribute("mvo");
-			String id = mvo.getId();
-			// 카트 테이블에서 해당 아이디가 가진 모든 목록을 가져오기 
-			List<CVO> cartList = myService.selectShopCartList(id);
-			return cartList ;
+			return String.valueOf(result);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	@RequestMapping("editCart.do")
-	public ModelAndView editCartCommand(CVO cvo) {
+	@RequestMapping(value = "editCart.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public String editCartCommand(CVO cvo) {
 		try {
+			System.out.println(cvo.getId());
+			System.out.println(cvo.getP_num());
 			int result = myService.updateCartAmount(cvo);
-			return new ModelAndView("redirect:showCart.do");
+			return String.valueOf(result);
 		} catch (Exception e) {
 		}
 		return null;

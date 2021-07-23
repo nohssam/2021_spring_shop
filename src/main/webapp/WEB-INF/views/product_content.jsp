@@ -29,44 +29,38 @@ table, th, td {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		function show_cart() {
-			console.log("aa: " + $("#log_in").val());
-			if ($("#log_in").val()=='0' || $("#log_in").val()=="") {
-				alert("로그인 하세요");
-				// location.href = "login.do";
-				return false;
-			} else if ($("#log_in").val()=='1'){
-				location.href = "showCart.do?id="+$("#log_id").val();
-			}
-		}
-		
-		$(function() {
-			$("#btn1").click(function() {
-				if ($("#log_in").val()==0 || $("#log_in").val()=="" ) {
-					alert("로그인 하세요");
-					location.href = "login.do";
-				} else if ($("#log_in").val()==1){
-					$.ajax({
-						url : "addCart.do",
-						method : "post",
-						data : "idx=${vo.idx}",
-						dataType : "text",
-						success : function(data) {
-							if (data == "0") {
-								alert("카트에 담기 실패");
-							} else {
-								alert("카트에 담기 성공");
-							}
-						},
-						error : function() {
-							alert("읽기실패");
+		$("#btn1").click(function() {
+			if("${log_in}"=='1'){
+				$.ajax({
+					url : "addCart.do",
+					method : "post",
+					data : "idx=${vo.idx}",
+					dataType : "text",
+					success : function(data) {
+						if (data == "0") {
+							alert("카트에 담기 실패");
+						} else {
+							alert("카트에 담기 성공");
 						}
-					});
-				}
-			});
+					},
+					error : function() {
+						alert("읽기실패");
+					}
+				});
+			}else{
+				alert("로그인 하세요");
+				location.href = "login.do";
+			}
+		});
+		$("#btn2").click(function() {
+			if("${log_in}" == '1') {
+				location.href="cartList_go.do";
+			}else{
+				alert("로그인 하세요");
+				location.href = "login.do";
+			}
 		});
 	});
-	
 </script>
 </head>
 <body>
@@ -106,9 +100,9 @@ table, th, td {
 				src="resources/images/${vo.p_image_l}" style="width: 350px;"></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="center">
-				<input type="button" value="장바구니에 담기" id="btn1" /> 
-				<input type="button" value="장바구니 보기" onclick="show_cart()" />
+			<td colspan="2" align="center"><input type="button"
+				value="장바구니에 담기" id="btn1" /> <input type="button" value="장바구니 보기"
+				id="btn2" />
 		</tr>
 	</table>
 </body>
