@@ -46,9 +46,9 @@ input{
 						tbody += "<td>"+this["p_name"]+"</td>"; 
 						tbody += "<td>"+this["p_price"]+" 원<br>";
 						tbody += "<font style='color: tomato'>(세일가 : "+this["p_saleprice"]+" 원)</font></td>";
-						tbody + "<form id='myform' method='post'>";
 						tbody += "<td><input type='number' id='amount' value='"+this["amount"]+"'>"
 						tbody += "&nbsp;&nbsp;&nbsp;"
+						tbody + "<form method='post' id='myForm'>";
 						tbody += "<input type='hidden' name='id' id='id' value='"+this["id"]+"'>";
 						tbody += "<input type='hidden' name='p_num' id='p_num' value='"+this["p_num"]+"'>";
 						tbody += "<input type='button' value='수정' id='editcart'></td>"
@@ -97,7 +97,7 @@ input{
 			$.ajax({
 				url : "deleteCart.do",
 				method : "post",
-				data : $("#myform").serialize(),
+				data : $("#myForm").serialize(),
 				dataType : "text",
 				success : function(data) {
 					if(data=='1'){

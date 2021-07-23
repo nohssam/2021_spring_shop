@@ -174,6 +174,7 @@ public class MyController {
 		try {
 			System.out.println(cvo.getId());
 			System.out.println(cvo.getP_num());
+			System.out.println(cvo.getAmount());
 			int result = myService.updateCartAmount(cvo);
 			return String.valueOf(result);
 		} catch (Exception e) {
