@@ -25,23 +25,48 @@ table, th, td {
 	width: 30%;
 }
 </style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function add_cart() {
-		if(${login=='ok'}){
-			location.href="addCart.do?idx=${vo.idx}";
-		}else{
-			alert("로그인 하세요");
-			location.href="login.do";
-		} 
-	}
-	function show_cart() {
-		if(${login=='ok'}){
-			location.href="showCart.do";
-		}else{
-			alert("로그인 하세요");
-			location.href="login.do";
-		} 
-	}
+	$(function() {
+		function show_cart() {
+			console.log("aa: " + $("#log_in").val());
+			if ($("#log_in").val()=='0' || $("#log_in").val()=="") {
+				alert("로그인 하세요");
+				// location.href = "login.do";
+				return false;
+			} else if ($("#log_in").val()=='1'){
+				location.href = "showCart.do?id="+$("#log_id").val();
+			}
+		}
+		
+		$(function() {
+			$("#btn1").click(function() {
+				if ($("#log_in").val()==0 || $("#log_in").val()=="" ) {
+					alert("로그인 하세요");
+					location.href = "login.do";
+				} else if ($("#log_in").val()==1){
+					$.ajax({
+						url : "addCart.do",
+						method : "post",
+						data : "idx=${vo.idx}",
+						dataType : "text",
+						success : function(data) {
+							if (data == "0") {
+								alert("카트에 담기 실패");
+							} else {
+								alert("카트에 담기 성공");
+							}
+						},
+						error : function() {
+							alert("읽기실패");
+						}
+					});
+				}
+			});
+		});
+	});
+	
 </script>
 </head>
 <body>
@@ -82,8 +107,8 @@ table, th, td {
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="button"  value="장바구니에 담기" onclick="add_cart()" /> 
-				<input type="button"  value="장바구니 보기" onclick="show_cart()" /></td>
+				<input type="button" value="장바구니에 담기" id="btn1" /> 
+				<input type="button" value="장바구니 보기" onclick="show_cart()" />
 		</tr>
 	</table>
 </body>

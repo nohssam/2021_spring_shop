@@ -28,6 +28,10 @@
     </style>
   </head>
   <body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+	
+</script>
   <div id="wrap">
 	  <hr noshade/>
 	  <div id="header">
@@ -37,13 +41,15 @@
 	  </div>
 	  <hr noshade/>
 	  <div id="nav">
-		  <a href="product_list.do?category=com001">컴퓨터</a> | 
+	  	  <input type="hidden" name="log_in" value="${log_in}" id="log_in">
+	  	  <input type="hidden" name="id" value="${mvo.id }" id="log_id">
+	  	  <a href="product_list.do?category=com001">컴퓨터</a> | 
 		  <a href="product_list.do?category=ele002">가전 제품</a> | 
 		  <a href="product_list.do?category=sp003">스포츠</a>
 		  <div id="log">
 		  	<c:choose>
-		  		<c:when test="${login=='ok' }">
-		  			${mvo.name }님  | 
+		  		<c:when test="${log_in=='1'}">
+		  			${log_name}님  | 
 		  			<a href="logout.do">로그아웃</a>  | 
 		  			<a href="showCart.do">장바구니</a>  |
 		  		</c:when>
