@@ -26,88 +26,76 @@ input{
 	width: 50px; 
 }
 </style>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
 		function cartList() {
 			$("#tbody").empty();
-			var total = 0 ;
-			var tbody = "";
 			$.ajax({
 				url : "cartList.do",
 				method : "post",
-				data : "id="+$("#log_id").val(),
 				dataType : "json",
 				success : function(data) {
-					$.each(data,function(){
+					var tbody="";
+					var total = 0 ;
+					$.each(data, function() {
 						tbody += "<tr>";
-						tbody += "<td>"+this["p_num"]+"</td>"; 
-						tbody += "<td>"+this["p_name"]+"</td>"; 
+						tbody += "<td><input type='checkbox' name='chk_id' value='"+this["id"]+"'></td>";
+						tbody += "<td>"+this["p_num"]+"</td>";
+						tbody += "<td>"+this["p_name"]+"</td>";
 						tbody += "<td>"+this["p_price"]+" 원<br>";
-						tbody += "<font style='color: tomato'>(세일가 : "+this["p_saleprice"]+" 원)</font></td>";
-						tbody += "<td><input type='number' id='amount' value='"+this["amount"]+"'>"
-						tbody += "&nbsp;&nbsp;&nbsp;"
-						tbody + "<form method='post' id='myForm'>";
-						tbody += "<input type='hidden' name='id' id='id' value='"+this["id"]+"'>";
-						tbody += "<input type='hidden' name='p_num' id='p_num' value='"+this["p_num"]+"'>";
-						tbody += "<input type='button' value='수정' id='editcart'></td>"
-						tbody += "<td> "+ (this["p_saleprice"]) * parseInt(this["amount"]) +" 원</td>";
-						tbody += "<td><input type='button' value='삭제' id='delcart' ></td>";
-						tbody +="</form>";
+						tbody += "<font style='color:red'>(세일가:"+this["p_saleprice"]+" 원)</font></td>";
+						
+						// 수정시  변경된 amount,  id , p_num 이 필요하다.
+						tbody += "<td><input type='number' name='amount' class='amount' value='"+this["amount"]	+"' id='"+this["id"]+"' p_num='"+this["p_num"]+"'</td>";
+						tbody += "<td>"+parseInt(this["p_saleprice"]) * parseInt(this["amount"])+" 원</td>";
+						
+						// 삭제시 id 와 p_num 이 필요하다.
+						tbody += "<td><input type='button' value='삭제' class='delcart' id='"+this["id"]+"' p_num='"+this["p_num"]+"'></td>";
 						tbody += "</tr>";
-						total = total + (this["p_saleprice"]) * parseInt(this["amount"]) ;
+						total = total + (parseInt(this["p_saleprice"]) * parseInt(this["amount"]));
 					});
 					tbody += "<tr style='text-align: right;'>";
-					tbody += "<td colspan='6' style='padding-right: 50px;'>";
-					tbody += "<h2> 총 결재액 : "+ total +" 원</h2>";
+					tbody += "<td colspan='7' style='padding-right: 50px'>";
+					tbody += "<h2> 총 결재액 : "  + total + " 원 </h2>";
 					tbody += "</tr>";
 					$("#tbody").append(tbody);
 				},
-				error : function() {
-					alert("읽기실패");
-				}
+				error : function() { alert("읽기실패");	}
 			});
-			return false;
 		}
-		
-		// 수정
-		$("table").on("click","#editcart", function() {
+		// 삭제
+		$("table").on("click", ".delcart", function() {
 			$.ajax({
-				url : "editCart.do",
+				url : "deleteCart.do",
 				method : "post",
-				data : "id="+$("#id").val()+"&amount="+$("#amount").val()+"&p_num="+$("#p_num").val(),
+				data : "id="+$(this).attr("id")+"&p_num="+$(this).attr("p_num"),
 				dataType : "text",
 				success : function(data) {
-					if(data=='0'){
-						   alert("수정 실패.");
-					   }else{
-						   alert("수정 성공.");
-						   cartList();
-					   }
+					if(data == '1'){
+					   cartList();
+					}
 				},
-				error : function() {
+				error: function() {
 					alert("읽기실패");
 				}
 			});
 		});
 		
-		// 삭제
-		$("table").on("click","#delcart", function() {
+		// 수정
+		$("table").on("change", ".amount", function() {
 			$.ajax({
-				url : "deleteCart.do",
+				url : "editCart.do",
 				method : "post",
-				data : $("#myForm").serialize(),
+				data : "id="+$(this).attr("id")+"&p_num="+$(this).attr("p_num")
+				        +"&amount="+$(this).val(),
 				dataType : "text",
 				success : function(data) {
-					if(data=='1'){
-						   alert(" 삭제 성공.");
-						   cartList();
-					   }else{
-						   alert("삭제 실패.");
-					   }
+					if(data == '1'){
+					   cartList();
+					}
 				},
-				error : function() {
+				error: function() {
 					alert("읽기실패");
 				}
 			});
@@ -124,15 +112,18 @@ input{
 		<caption><h2> :: 장바구니 내용 :: </h2></caption>
 		<thead>
 			<tr bgcolor="#dedede">
+				<th style="width: 5%">체크</th>
 				<th style="width: 10%">제품번호</th>
-				<th style="width: 15%">제품명</th>
+				<th style="width: 20%">제품명</th>
 				<th style="width: 20%">단가</th>
-				<th style="width: 20%">수량</th>
+				<th style="width: 15%">수량</th>
 				<th style="width: 15%">금액</th>
-				<th style="width: 10%">삭제</th>
+				<th style="width: 15%">삭제</th>
 			</tr>
 		</thead>
 		<tbody id="tbody"></tbody>
 	</table>
 </body>
 </html>
+
+

@@ -30,6 +30,7 @@
 	<delete id="cartDelete" parameterType="com.ict.vo.CVO">
 		delete from cart where id=#{id} and p_num = #{p_num} 
 	</delete>
+	
 	<update id="cartAmountUpdate" parameterType="com.ict.vo.CVO">
 		update cart set amount = #{amount} where id=#{id} and p_num=#{p_num}
 	</update>

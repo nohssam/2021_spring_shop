@@ -29,7 +29,9 @@ table, th, td {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+		// 장바구니 담기
 		$("#btn1").click(function() {
+			// 로그인 유무
 			if("${log_in}"=='1'){
 				$.ajax({
 					url : "addCart.do",
@@ -37,11 +39,9 @@ table, th, td {
 					data : "idx=${vo.idx}",
 					dataType : "text",
 					success : function(data) {
-						if (data == "0") {
-							alert("카트에 담기 실패");
-						} else {
+						if (data == "1") {
 							alert("카트에 담기 성공");
-						}
+						} 
 					},
 					error : function() {
 						alert("읽기실패");
@@ -100,9 +100,9 @@ table, th, td {
 				src="resources/images/${vo.p_image_l}" style="width: 350px;"></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="center"><input type="button"
-				value="장바구니에 담기" id="btn1" /> <input type="button" value="장바구니 보기"
-				id="btn2" />
+			<td colspan="2" align="center">
+			<input type="button" value="장바구니에 담기" id="btn1" /> 
+			<input type="button" value="장바구니 보기"	id="btn2" />
 		</tr>
 	</table>
 </body>

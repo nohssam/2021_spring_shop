@@ -86,23 +86,19 @@ public class MyController {
 		}
 		return null;
 	}
-	@RequestMapping(value = "addCart.do",produces = "application/html; charset=utf-8" )
+	@RequestMapping(value="addCart.do", produces="text/html; charset=utf-8" )
 	@ResponseBody
 	public String AddCart(HttpSession session, String idx) {
 		try {
 			// 제품 정보를 구하기 위해서 VO 구하자 
 			String id = (String)session.getAttribute("log_id");
-			
-			
 			// idx를 이용해서 제품 정보를 구하자 
 			VO vo = myService.selectShopOneList(idx);
-			
 			// 해당 아이디를 가진 사람의 카트에  해당 제품이 있는지 검색 하자.
 			// 없으면 카트에 추가 하고, 있으면 카트에 수량을 1 증가 시키자 
 			CVO cvo = myService.selectShopCartSearch(id, vo.getP_num());
 			int result = 0 ;
 			if(cvo == null) {
-				// 카트에 없으면
 				CVO c_vo = new CVO();
 				c_vo.setP_num(vo.getP_num());
 				c_vo.setP_name(vo.getP_name());
@@ -112,25 +108,18 @@ public class MyController {
 				c_vo.setId(id);
 				result = myService.insertShopCartAdd(c_vo);
 			}else {
-				// 카트에 있으면
-				 result = myService.updateShopCartUp(cvo);
+				result = myService.updateShopCartUp(cvo);
 			}
 			return String.valueOf(result);
 		} catch (Exception e) {
 			return "0";
 		}
-		
 	}
+	
 	@RequestMapping("cartList_go.do")
 	public ModelAndView cartList_goCommand(HttpSession session) {
 		try {
-			ModelAndView mv = new ModelAndView("cartList");
-			String id = (String)session.getAttribute("log_id") ;
-			
-			// 카트 테이블에서 해당 아이디가 가진 모든 목록을 가져오기 
-			List<CVO> cartList = myService.selectShopCartList(id);
-			mv.addObject("cartList", cartList);
-			return mv;
+			return new ModelAndView("cartList");
 		} catch (Exception e) {
 		}
 		return null;
@@ -148,6 +137,7 @@ public class MyController {
 	public List<CVO> cartListCommand(HttpSession session) {
 		try {
 			String id = (String)session.getAttribute("log_id");
+			
 			// 카트 테이블에서 해당 아이디가 가진 모든 목록을 가져오기 
 			List<CVO> cartList = myService.selectShopCartList(id);
 			return cartList;
@@ -160,8 +150,6 @@ public class MyController {
 	@ResponseBody
 	public String deleteCartCommand(CVO cvo){
 		try {
-			System.out.println(cvo.getId());
-			System.out.println(cvo.getP_num());
 			int result = myService.deleteCartDel(cvo);
 			return String.valueOf(result);
 		} catch (Exception e) {
@@ -172,9 +160,6 @@ public class MyController {
 	@ResponseBody
 	public String editCartCommand(CVO cvo) {
 		try {
-			System.out.println(cvo.getId());
-			System.out.println(cvo.getP_num());
-			System.out.println(cvo.getAmount());
 			int result = myService.updateCartAmount(cvo);
 			return String.valueOf(result);
 		} catch (Exception e) {
