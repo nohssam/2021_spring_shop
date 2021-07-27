@@ -166,6 +166,23 @@ public class MyController {
 		}
 		return null;
 	}
+	@RequestMapping(value = "chk_del.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public String chk_delCommand(@RequestParam("id[]")String[] id, @RequestParam("p_num[]")String[] p_num) {
+		try {
+			int result = 0;
+			for(int i=0; i<id.length; i++) {
+				CVO cvo = new CVO();
+				cvo.setId(id[i]);
+				cvo.setP_num(p_num[i]);
+				result = myService.deleteCartDel(cvo);
+			}
+			return String.valueOf(result);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
 	@RequestMapping(value = "product_add", method = RequestMethod.POST)
 	public ModelAndView productAddCommand(VO vo,HttpServletRequest request) {
 		try {
@@ -192,6 +209,8 @@ public class MyController {
 		}
 		return null;
 	}
+	
+	
 }
 
 

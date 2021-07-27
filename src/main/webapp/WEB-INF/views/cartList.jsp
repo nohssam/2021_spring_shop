@@ -40,7 +40,7 @@ input{
 					var total = 0 ;
 					$.each(data, function() {
 						tbody += "<tr>";
-						tbody += "<td><input type='checkbox' name='chk_id' value='"+this["id"]+"'></td>";
+						tbody += "<td><input type='checkbox' name='chk_id' id='"+this["id"]+"' p_num='"+this["p_num"]+"'></td>";
 						tbody += "<td>"+this["p_num"]+"</td>";
 						tbody += "<td>"+this["p_name"]+"</td>";
 						tbody += "<td>"+this["p_price"]+" 원<br>";
@@ -100,6 +100,36 @@ input{
 				}
 			});
 		});
+		$("#chk").click(function() {
+			var chk_id = [] ;
+			var id = [] ;
+			var p_num = [];
+			$("input[name='chk_id']:checked").each(function() {
+				chk_id.push($(this).val());
+				id.push($(this).attr("id"));
+				p_num.push($(this).attr("p_num"));
+			});
+			// 하나도 선택하지 않으면 
+			if(chk_id.length==0){
+				alert("선택 후 눌러 주세요");
+				return false;
+			}
+			$.ajax({
+				url : "chk_del.do",
+				method : "post",
+				data :{"id":id, "p_num":p_num},
+				dataType : "text",
+				success : function(data) {
+					if(data == '1'){
+					   cartList();
+					}
+				},
+				error: function() {
+					alert("읽기실패");
+				}
+			});
+		});
+		
 		cartList();
 	});
 </script>
@@ -108,8 +138,9 @@ input{
 	<%-- 현재 페이지에서 다른 페이지 가져오기  --%>
 	<%@ include file="top.jsp" %>
 	<hr>
+		<button id ="chk" style="text-align: right;" >선택삭제</button>
 	<table>
-		<caption><h2> :: 장바구니 내용 :: </h2></caption>
+		<h2> :: 장바구니 내용 :: </h2>
 		<thead>
 			<tr bgcolor="#dedede">
 				<th style="width: 5%">체크</th>
